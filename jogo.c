@@ -1,4 +1,5 @@
 #include <stdio.h>      // Para printf, scanf, getchar
+#include <stdlib.h>     // Necessário para a função system()
 #include "carta.h"      // Para que este arquivo saiba o que é uma "struct Carta"
 #include "jogo.h"       // Para as declarações das nossas próprias funções
 
@@ -159,10 +160,12 @@ void iniciarRodada(const struct Carta baralho[], int tamanho_baralho) {
     printf("%s: %d Ponto(s)\n", carta_jogador1.nome_cidade, pontos_c1);
     printf("%s: %d Ponto(s)\n\n", carta_jogador2.nome_cidade, pontos_c2);
     
-    if (pontos_c1 > pontos_c2) {
+if (pontos_c1 > pontos_c2) {
         printf("🏆 O GRANDE VENCEDOR É: %s!\n", carta_jogador1.nome_cidade);
+        system("start brasil.mp3");
     } else if (pontos_c2 > pontos_c1) {
         printf("🏆 O GRANDE VENCEDOR É: %s!\n", carta_jogador2.nome_cidade);
+        system("start brasil.mp3");
     } else {
         printf("🎌 A BATALHA TERMINOU EM EMPATE!\n");
     }
