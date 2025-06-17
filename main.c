@@ -1,36 +1,12 @@
-#include <stdio.h>      // Para funções de entrada e saída, como printf
-#include "carta.h"      // Para que este arquivo saiba o que é uma "struct Carta"
-
-// NOVO: Incluindo a biblioteca do Windows para a função de codificação
-// A diretiva #ifdef garante que isso só será incluído ao compilar no Windows
-#ifdef _WIN32
+#include <stdio.h>
 #include <windows.h>
-#endif
 
-// A criação do nosso baralho completo com as 14 cidades.
+#include "carta.h"
+#include "jogo.h"
+
 const struct Carta BARALHO[14] = {
-    // ... (O conteúdo do baralho continua exatamente o mesmo de antes, não precisa mudar nada aqui)
-    // Carta 1: João Pessoa
-    {
-        .nome_cidade = "Joao Pessoa",
-        .populacao = 833932,
-        .area = 210.044,
-        .pib = 22244.0, // Em Milhões de R$
-        .idhm = 0.763,
-        .ano_fundacao = 1585,
-        .densidade_demografica = 833932 / 210.044
-    },
-    // Carta 2: Campina Grande
-    {
-        .nome_cidade = "Campina Grande",
-        .populacao = 419379,
-        .area = 593.026,
-        .pib = 10134.0, // Em Milhões de R$
-        .idhm = 0.720,
-        .ano_fundacao = 1864,
-        .densidade_demografica = 419379 / 593.026
-    },
-    // ... e assim por diante para todas as 14 cartas
+    { .nome_cidade = "Joao Pessoa", .populacao = 833932, .area = 210.044, .pib = 22244.0, .idhm = 0.763, .ano_fundacao = 1585, .densidade_demografica = 833932 / 210.044 },
+    { .nome_cidade = "Campina Grande", .populacao = 419379, .area = 593.026, .pib = 10134.0, .idhm = 0.720, .ano_fundacao = 1864, .densidade_demografica = 419379 / 593.026 },
     { .nome_cidade = "Santa Rita", .populacao = 149910, .area = 726.565, .pib = 2779.0, .idhm = 0.636, .ano_fundacao = 1890, .densidade_demografica = 149910 / 726.565 },
     { .nome_cidade = "Patos", .populacao = 103165, .area = 512.93, .pib = 2275.0, .idhm = 0.703, .ano_fundacao = 1903, .densidade_demografica = 103165 / 512.93 },
     { .nome_cidade = "Bayeux", .populacao = 97544, .area = 32.12, .pib = 1205.0, .idhm = 0.648, .ano_fundacao = 1959, .densidade_demografica = 97544 / 32.12 },
@@ -45,26 +21,45 @@ const struct Carta BARALHO[14] = {
     { .nome_cidade = "Aguiar", .populacao = 5570, .area = 344.68, .pib = 55.0, .idhm = 0.589, .ano_fundacao = 1961, .densidade_demografica = 5570 / 344.68 }
 };
 
-
-// A função principal que inicia o programa
 int main() {
     // Ajusta a codificação do terminal para UTF-8 (apenas em Windows)
-    #ifdef _WIN32
-        SetConsoleOutputCP(65001);
-    #endif
+    SetConsoleOutputCP(65001);
 
-    printf("=============================================\n");
-    printf("   Boas vindas ao Super Trunfo da Paraíba!   \n");
-    printf("=============================================\n\n");
-    
-    printf("Baralho carregado com %zu cidades.\n", sizeof(BARALHO) / sizeof(BARALHO[0]));
-    printf("A primeira carta do baralho é: %s.\n", BARALHO[0].nome_cidade);
-    printf("A última carta do baralho é: %s.\n\n", BARALHO[13].nome_cidade);
-    
-    printf("Pressione Enter para iniciar o jogo...\n");
-    getchar();
+    int opcao = -1;
+    const int TAMANHO_BARALHO = sizeof(BARALHO) / sizeof(BARALHO[0]);
 
-    // TODO: Aqui entrará o loop principal do jogo (do-while)
+    do {
+        printf("\n\n=============================================\n");
+        printf("   BOAS VINDAS AO SUPER TRUNFO DA PARAÍBA!   \n");
+        printf("=============================================\n");
+        printf("1. Como Jogar\n");
+        printf("2. Visualizar Cartas\n");
+        printf("3. Iniciar Duelo!\n");
+        printf("---------------------------------------------\n");
+        printf("0. Sair do Jogo\n");
+        printf("=============================================\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                mostrarInstrucoes();
+                break;
+            case 2:
+                visualizarCartas(BARALHO, TAMANHO_BARALHO);
+                break;
+            case 3:
+                iniciarRodada(BARALHO, TAMANHO_BARALHO);
+                break;
+            case 0:
+                printf("\nObrigado por jogar! Até a próxima!\n");
+                break;
+            default:
+                printf("\nOpção inválida! Por favor, tente novamente.\n");
+                break;
+        }
+
+    } while (opcao != 0);
     
-    return 0; // Indica que o programa terminou com sucesso
+    return 0;
 }
